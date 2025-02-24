@@ -8,9 +8,9 @@ namespace Mastermind.Tests
         public void CanStartNewGame()
         {
             var app = Start();
-            Assert.That(app.App.State.Phase == AppPhase.MainMenu);
+            Assert.That(app.State.Phase == AppPhase.MainMenu);
             app.SimulateUserInput(ConsoleKey.D1);
-            Assert.That(app.App.State.Phase == AppPhase.InGame);
+            Assert.That(app.State.Phase == AppPhase.InGame);
         }
     }
 }

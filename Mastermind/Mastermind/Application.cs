@@ -8,12 +8,12 @@ namespace Mastermind
     {
         private BackgroundWorker _worker;
         private readonly IView _view;
-        public readonly ApplicationState State;
+        private readonly ApplicationState _state;
 
-        public Application(IView viewController)
+        public Application(IView viewController, ApplicationState? state = null)
         {
             _view = viewController;
-            State = new ApplicationState();
+            _state = state ?? new ApplicationState();
         }
 
         public bool IsRunning => _worker.IsBusy;
@@ -35,8 +35,8 @@ namespace Mastermind
         {
             do
             {
-                _view.PrintScreen(State);
-                switch (State.Phase)
+                _view.PrintScreen(_state);
+                switch (_state.Phase)
                 {
                     case AppPhase.MainMenu:
                     {
@@ -52,7 +52,7 @@ namespace Mastermind
                     }
                 }
 
-            } while (State.Phase != AppPhase.Exited);
+            } while (_state.Phase != AppPhase.Exited);
         }
 
         private void HandleMainMenuResponse(ConsoleKeyInfo response)
@@ -60,11 +60,11 @@ namespace Mastermind
             switch (response.Key)
             {
                 case ConsoleKey.D1:
-                    State.CurrentGame = new GameState();
-                    State.Phase = AppPhase.InGame;
+                    _state.CurrentGame = new GameState();
+                    _state.Phase = AppPhase.InGame;
                     break;
                 case ConsoleKey.Escape:
-                    State.Phase = AppPhase.Exited;
+                    _state.Phase = AppPhase.Exited;
                     break;
             }
         }
