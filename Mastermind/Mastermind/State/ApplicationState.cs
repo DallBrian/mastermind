@@ -1,4 +1,4 @@
-﻿namespace Mastermind.Models
+﻿namespace Mastermind.State
 {
     public enum AppPhase
     {

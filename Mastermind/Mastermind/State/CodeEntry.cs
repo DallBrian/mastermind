@@ -1,4 +1,4 @@
-﻿namespace Mastermind.Models
+﻿namespace Mastermind.State
 {
     public class CodeEntry
     {
@@ -9,7 +9,7 @@
             ColorCode = codeString.ToCharArray().Select(c => new ColorKey(c)).ToList();
         }
 
-        public List<ColorKey> ColorCode { get; } = [];
+        public List<ColorKey> ColorCode { get; }
 
         public bool IsValid => ColorCode.Count == _maxLength && ColorCode.All(c => c.IsValid);
     }

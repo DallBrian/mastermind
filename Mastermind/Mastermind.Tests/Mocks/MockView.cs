@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Mastermind.Display;
-using Mastermind.Models;
+using Mastermind.State;
 
 namespace Mastermind.Tests.Mocks
 {
@@ -8,7 +8,7 @@ namespace Mastermind.Tests.Mocks
     {
         private const int Interval = 50;
 
-        public string Text { get; set; }
+        public string? Text { get; private set; }
 
         public override void PrintScreen(ApplicationState state)
         {
@@ -32,7 +32,7 @@ namespace Mastermind.Tests.Mocks
         public override string GetResponse()
         {
             while (Input is null) Thread.Sleep(Interval);
-            
+
             var input = Input;
             Input = null;
             return input;

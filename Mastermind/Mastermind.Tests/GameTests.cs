@@ -1,4 +1,4 @@
-﻿using Mastermind.Models;
+﻿using Mastermind.State;
 
 namespace Mastermind.Tests
 {
@@ -8,9 +8,9 @@ namespace Mastermind.Tests
         public void CanStartNewGame()
         {
             var app = Start();
-            Assert.That(app.State.Phase == AppPhase.MainMenu);
+            Assert.That(app.State.Phase, Is.EqualTo(AppPhase.MainMenu));
             app.SimulateUserInput(ConsoleKey.D1);
-            Assert.That(app.State.Phase == AppPhase.InGame);
+            Assert.That(app.State.Phase, Is.EqualTo(AppPhase.InGame));
         }
     }
 }

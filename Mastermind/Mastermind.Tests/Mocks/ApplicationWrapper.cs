@@ -1,4 +1,4 @@
-﻿using Mastermind.Models;
+﻿using Mastermind.State;
 
 namespace Mastermind.Tests.Mocks
 {

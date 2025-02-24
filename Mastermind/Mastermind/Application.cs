@@ -1,12 +1,12 @@
 ﻿using Mastermind.Display;
-using Mastermind.Models;
 using System.ComponentModel;
+using Mastermind.State;
 
 namespace Mastermind
 {
     public class Application
     {
-        private BackgroundWorker _worker;
+        private BackgroundWorker? _worker;
         private readonly IView _view;
         private readonly ApplicationState _state;
 
@@ -16,12 +16,11 @@ namespace Mastermind
             _state = state ?? new ApplicationState();
         }
 
-        public bool IsRunning => _worker.IsBusy;
-        
+        public bool IsRunning => _worker?.IsBusy ?? false;
+
         public void Run()
         {
-            _worker = new();
-            _worker.WorkerSupportsCancellation = true;
+            _worker = new BackgroundWorker();
             _worker.DoWork += ApplicationLoop;
             _worker.RunWorkerAsync();
         }
@@ -31,7 +30,7 @@ namespace Mastermind
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ApplicationLoop(object sender, DoWorkEventArgs e)
+        private void ApplicationLoop(object? sender, DoWorkEventArgs e)
         {
             do
             {
@@ -39,17 +38,17 @@ namespace Mastermind
                 switch (_state.Phase)
                 {
                     case AppPhase.MainMenu:
-                    {
-                        var playerInput = _view.GetKeyResponse();
-                        HandleMainMenuResponse(playerInput);
-                        break;
-                    }
+                        {
+                            var playerInput = _view.GetKeyResponse();
+                            HandleMainMenuResponse(playerInput);
+                            break;
+                        }
                     case AppPhase.InGame:
-                    {
-                        var playerInput = _view.GetResponse();
-                        HandleInGameResponse(playerInput);
-                        break;
-                    }
+                        {
+                            var playerInput = _view.GetResponse();
+                            HandleInGameResponse(playerInput);
+                            break;
+                        }
                 }
 
             } while (_state.Phase != AppPhase.Exited);
@@ -71,7 +70,7 @@ namespace Mastermind
 
         private void HandleInGameResponse(string response)
         {
-            
+            throw new NotImplementedException();
         }
     }
 }

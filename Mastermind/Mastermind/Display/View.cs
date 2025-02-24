@@ -1,5 +1,5 @@
-﻿using Mastermind.Models;
-using System.Text;
+﻿using System.Text;
+using Mastermind.State;
 
 namespace Mastermind.Display
 {
@@ -27,26 +27,18 @@ namespace Mastermind.Display
 
         public string GetStringView(ApplicationState state)
         {
-            var stringView = new StringBuilder();
-            stringView.AppendLine("Mastermind");
-            
+            var sb = new StringBuilder();
+            sb.AppendLine("Mastermind");
+
             switch (state.Phase)
             {
                 case AppPhase.MainMenu:
-                    stringView.Append(GetMainMenuView(state));
+                    sb.AppendLine("1 New Game");
                     break;
                 case AppPhase.InGame:
-                    stringView.Append(GetGameView(state.CurrentGame!));
+                    sb.Append(GetGameView(state.CurrentGame!));
                     break;
             }
-
-            return stringView.ToString();
-        }
-
-        private string GetMainMenuView(ApplicationState state)
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("1 New Game");
 
             return sb.ToString();
         }

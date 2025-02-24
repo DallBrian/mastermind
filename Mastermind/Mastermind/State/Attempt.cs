@@ -1,6 +1,6 @@
 ﻿using Mastermind.Exceptions;
 
-namespace Mastermind.Models
+namespace Mastermind.State
 {
     public class Attempt
     {
@@ -11,7 +11,7 @@ namespace Mastermind.Models
             ColorMatch = GetColorMatches(guess, gameCode);
             FullMatch = GetFullMatches(guess, gameCode);
         }
-            
+
         private int GetFullMatches(CodeEntry guess, CodeEntry gameCode)
         {
             throw new NotImplementedException();

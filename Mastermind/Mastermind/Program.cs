@@ -9,7 +9,7 @@ namespace Mastermind
             var view = new View();
             var app = new Application(view);
             app.Run();
-            while(app.IsRunning){}
+            while (app.IsRunning) { }
         }
     }
 }
