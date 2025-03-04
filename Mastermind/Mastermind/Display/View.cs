@@ -46,12 +46,14 @@ namespace Mastermind.Display
         private string GetGameView(GameState gameState)
         {
             var sb = new StringBuilder();
-            var attempts = new List<Attempt>();
-            attempts.AddRange(gameState.Attempts);
-            attempts.Reverse();
-            foreach (var attempt in attempts)
+            foreach (var attempt in gameState.Attempts)
             {
                 sb.AppendLine(attempt.ToString());
+            }
+
+            if (gameState.Result == GameResult.Won)
+            {
+                sb.AppendLine("You Won!");
             }
 
             return sb.ToString();

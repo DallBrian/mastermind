@@ -70,7 +70,19 @@ namespace Mastermind
 
         private void HandleInGameResponse(string response)
         {
-            throw new NotImplementedException();
+            if (_state.CurrentGame.Result == GameResult.Won)
+            {
+                _state.GameHistory.Add(_state.CurrentGame);
+                _state.Phase = AppPhase.MainMenu;
+            }
+
+            var entry = new CodeEntry(response);
+            if (entry.IsValid)
+            {
+                _state.CurrentGame!.Attempts.Add(new Attempt(entry, _state.CurrentGame.GameCode));
+                if (_state.CurrentGame.Attempts.Last().FullMatch.Equals(_state.CurrentGame.GameCode.ColorCode.Count))
+                    _state.CurrentGame.Result = GameResult.Won;
+            }
         }
     }
 }

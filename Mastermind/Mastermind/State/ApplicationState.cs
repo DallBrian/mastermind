@@ -13,6 +13,6 @@
 
         public GameState? CurrentGame { get; set; }
 
-        public GameState[] GameHistory { get; set; } = [];
+        public List<GameState> GameHistory { get; set; } = [];
     }
 }
