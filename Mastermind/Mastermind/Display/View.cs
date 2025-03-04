@@ -56,7 +56,7 @@ namespace Mastermind.Display
                                                  "| |\\/| |/ _` / __| __/ _ \\ '__| '_ ` _ \\| | '_ \\ / _` |\r\n" +
                                                  "| |  | | (_| \\__ \\ ||  __/ |  | | | | | | | | | | (_| |\r\n" +
                                                  "\\_|  |_/\\__,_|___/\\__\\___|_|  |_| |_| |_|_|_| |_|\\__,_|\r\n" +
-                                                 "                                                       \r\n";
+                                                 "                                                       ";
 
         private int _maxWidth = _asciiArtTitle.Split(Environment.NewLine).Select(l => l.Length).Max();
 
@@ -68,11 +68,22 @@ namespace Mastermind.Display
             {
                sb.AppendLine(new StyledString(line, ConsoleColor.Black, ConsoleColor.White).ToJson());
             }
-            
+
+            foreach (var validChar in GameOptions.ValidChars)
+            {
+                sb.Append(new ColorKey(validChar).ToDisplay(ConsoleColor.Black, 1));
+            }
+            sb.AppendLine();
+
             switch (state.Phase)
             {
                 case AppPhase.MainMenu:
                     sb.AppendLine(new StyledString("1 New Game", center: 1).ToJson());
+                    sb.AppendLine(new StyledString("2 Options", center: 1).ToJson());
+                    break;
+                case AppPhase.Options:
+                    sb.AppendLine(new StyledString($"{nameof(GameOptions.CodeLength)}: {GameOptions.CodeLength}",
+                        center: 1).ToJson());
                     break;
                 case AppPhase.InGame:
                     sb.Append(GetGameView(state.CurrentGame!));

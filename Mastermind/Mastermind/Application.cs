@@ -43,6 +43,12 @@ namespace Mastermind
                             HandleMainMenuResponse(playerInput);
                             break;
                         }
+                    case AppPhase.Options:
+                    {
+                        var playerInput = _view.GetKeyResponse();
+                        HandleOptionsResponse(playerInput);
+                        break;
+                    }
                     case AppPhase.InGame:
                         {
                             var playerInput = _view.GetResponse();
@@ -62,8 +68,39 @@ namespace Mastermind
                     _state.CurrentGame = new GameState();
                     _state.Phase = AppPhase.InGame;
                     break;
+                case ConsoleKey.D2:
+                    _state.Phase = AppPhase.Options;
+                    break;
                 case ConsoleKey.Escape:
                     _state.Phase = AppPhase.Exited;
+                    break;
+            }
+        }
+
+        private void HandleOptionsResponse(ConsoleKeyInfo response)
+        {
+            switch (response.Key)
+            {
+                case ConsoleKey.D1:
+                    GameOptions.CodeLength = 1;
+                    break;
+                case ConsoleKey.D2:
+                    GameOptions.CodeLength = 2;
+                    break;
+                case ConsoleKey.D3:
+                    GameOptions.CodeLength = 3;
+                    break;
+                case ConsoleKey.D4:
+                    GameOptions.CodeLength = 4;
+                    break;
+                case ConsoleKey.D5:
+                    GameOptions.CodeLength = 5;
+                    break;
+                case ConsoleKey.D6:
+                    GameOptions.CodeLength = 6;
+                    break;
+                case ConsoleKey.Backspace:
+                    _state.Phase = AppPhase.MainMenu;
                     break;
             }
         }

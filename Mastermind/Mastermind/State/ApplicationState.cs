@@ -3,6 +3,7 @@
     public enum AppPhase
     {
         MainMenu,
+        Options,
         InGame,
         Exited
     }

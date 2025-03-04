@@ -4,8 +4,6 @@ namespace Mastermind.State
 {
     public class CodeEntry
     {
-        private readonly int _maxLength = 4;
-
         public CodeEntry(string codeString)
         {
             ColorCode = codeString.ToCharArray().Select(c => new ColorKey(c)).ToList();
@@ -13,7 +11,7 @@ namespace Mastermind.State
 
         public List<ColorKey> ColorCode { get; }
 
-        public bool IsValid => ColorCode.Count == _maxLength && ColorCode.All(c => c.IsValid);
+        public bool IsValid => ColorCode.Count == GameOptions.CodeLength && ColorCode.All(c => c.IsValid);
 
         public string ToDisplay()
         {
@@ -28,8 +26,6 @@ namespace Mastermind.State
 
     public class ColorKey(char key)
     {
-        private readonly char[] _validChars = ['r', 'b', 'y', 'g'];
-
         public char Key { get; set; } = key;
 
         private ConsoleColor Foreground = key switch
@@ -37,7 +33,9 @@ namespace Mastermind.State
             'r' => ConsoleColor.Red,
             'b' => ConsoleColor.Blue,
             'y' => ConsoleColor.Yellow,
-            'g' => ConsoleColor.Green
+            'g' => ConsoleColor.Green,
+            'c' => ConsoleColor.Cyan,
+            'm' => ConsoleColor.Magenta
         };
 
         private ConsoleColor Background = key switch
@@ -45,15 +43,18 @@ namespace Mastermind.State
             'r' => ConsoleColor.Red,
             'b' => ConsoleColor.Blue,
             'y' => ConsoleColor.Yellow,
-            'g' => ConsoleColor.Green
+            'g' => ConsoleColor.Green,
+            'c' => ConsoleColor.Cyan,
+            'm' => ConsoleColor.Magenta
         };
 
-        public bool IsValid => _validChars.Any(c => c.Equals(Key));
+        public bool IsValid => GameOptions.ValidChars.Any(c => c.Equals(Key));
 
-        public string ToDisplay()
+        public string ToDisplay(ConsoleColor? foreground = null, double centerPos = .65)
         {
-            return new StyledString(Key.ToString(), Foreground, Background, .65/8).ToJson() +
-                   new StyledString(" ", center: .65 / 8).ToJson();
+            var percentageSpace = centerPos / (GameOptions.CodeLength * 1.5);
+            return new StyledString(Key.ToString(), foreground ?? Foreground, Background, percentageSpace).ToJson() +
+                   new StyledString(" ", center: percentageSpace / 2).ToJson();
         }
 
         public override string ToString()
