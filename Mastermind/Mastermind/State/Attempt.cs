@@ -25,7 +25,7 @@ namespace Mastermind.State
             {
                 if (gameUniqueColorCountMap.TryGetValue(c.Key, out var count))
                 {
-                    gameUniqueColorCountMap[c.Key] = count++;
+                    gameUniqueColorCountMap[c.Key] = count + 1;
                 }
                 else
                 {
@@ -33,21 +33,32 @@ namespace Mastermind.State
                 }
             });
 
-            var colorMatchCount = 0;
+            // Remove all guess keys and decrement color count for exact matches
+            var guessColorCodesNotExactMatch = new List<ColorKey>();
             for (var i = 0; i < guess.ColorCode.Count; i++)
             {
                 var key = guess.ColorCode[i].Key;
                 var isFullMatch = gameCode.ColorCode[i].Key.Equals(key);
                 if (isFullMatch)
                 {
-                    gameUniqueColorCountMap[key]--;
-                    continue;
+                    gameUniqueColorCountMap[key] -= 1;
                 }
+                else
+                {
+                    guessColorCodesNotExactMatch.Add(guess.ColorCode[i]);
+                }
+            }
 
+            // If colors still exist in map for non full match guess keys then increment color count and decrement map
+            var colorMatchCount = 0;
+            foreach (var colorKey in guessColorCodesNotExactMatch)
+            {
+                var key = colorKey.Key;
+                
                 if (!gameUniqueColorCountMap.TryGetValue(key, out var count)) continue;
                 if (count <= 0) continue;
 
-                gameUniqueColorCountMap[key]--;
+                gameUniqueColorCountMap[key] -= 1;
                 colorMatchCount++;
             }
 

@@ -9,7 +9,7 @@ namespace Mastermind.Tests
             new(new CodeEntry("rbyg"), new CodeEntry("rbyg"), 4, 0),
             new(new CodeEntry("rrbr"), new CodeEntry("rbyr"), 2, 1),
             new(new CodeEntry("rrrr"), new CodeEntry("rbyg"), 1, 0),
-            new(new CodeEntry("rbyg"), new CodeEntry("rrrr"), 1, 0)
+            new(new CodeEntry("bbbb"), new CodeEntry("gygb"), 1, 0)
         ];
 
         [TestCaseSource(nameof(AttemptTestCases))]
