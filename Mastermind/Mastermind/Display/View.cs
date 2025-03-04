@@ -22,18 +22,57 @@ namespace Mastermind.Display
         public virtual void PrintScreen(ApplicationState state)
         {
             Console.Clear();
-            Console.Write(GetStringView(state));
+            var stringView = GetStringView(state);
+            var newLines = stringView.Split(Environment.NewLine);
+            foreach (var line in newLines)
+            {
+                var parsedStrings = line.Split(";", StringSplitOptions.RemoveEmptyEntries);
+                foreach (var parsedString in parsedStrings)
+                {
+                    var styledString = StyledString.FromJson(parsedString);
+                    if (styledString.ForegroundColor is not null)
+                        Console.ForegroundColor = styledString.ForegroundColor.Value;
+                    if (styledString.BackgroundColor is not null)
+                        Console.BackgroundColor = styledString.BackgroundColor.Value;
+                    if (styledString.CenterPosition is not null)
+                    {
+                        var width = (int)Math.Round(_maxWidth * styledString.CenterPosition.Value, 0, MidpointRounding.ToZero);
+                        styledString.Value = styledString.Value
+                            .PadLeft(((width - styledString.Value.Length) / 2) + styledString.Value.Length)
+                            .PadRight(width);
+                    }
+
+                    Console.Write(styledString.Value);
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+            }
         }
+
+        private static readonly string _asciiArtTitle = "\r\n" +
+                                                 "___  ___          _                      _           _ \r\n" +
+                                                 "|  \\/  |         | |                    (_)         | |\r\n" +
+                                                 "| .  . | __ _ ___| |_ ___ _ __ _ __ ___  _ _ __   __| |\r\n" +
+                                                 "| |\\/| |/ _` / __| __/ _ \\ '__| '_ ` _ \\| | '_ \\ / _` |\r\n" +
+                                                 "| |  | | (_| \\__ \\ ||  __/ |  | | | | | | | | | | (_| |\r\n" +
+                                                 "\\_|  |_/\\__,_|___/\\__\\___|_|  |_| |_| |_|_|_| |_|\\__,_|\r\n" +
+                                                 "                                                       \r\n";
+
+        private int _maxWidth = _asciiArtTitle.Split(Environment.NewLine).Select(l => l.Length).Max();
 
         public string GetStringView(ApplicationState state)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("Mastermind");
-
+            var splitNewLines = _asciiArtTitle.Split(Environment.NewLine);
+            foreach (var line in splitNewLines)
+            {
+               sb.AppendLine(new StyledString(line, ConsoleColor.Black, ConsoleColor.White).ToJson());
+            }
+            
             switch (state.Phase)
             {
                 case AppPhase.MainMenu:
-                    sb.AppendLine("1 New Game");
+                    sb.AppendLine(new StyledString("1 New Game", center: 1).ToJson());
                     break;
                 case AppPhase.InGame:
                     sb.Append(GetGameView(state.CurrentGame!));
@@ -48,12 +87,12 @@ namespace Mastermind.Display
             var sb = new StringBuilder();
             foreach (var attempt in gameState.Attempts)
             {
-                sb.AppendLine(attempt.ToString());
+                sb.AppendLine(attempt.ToDisplay());
             }
 
             if (gameState.Result == GameResult.Won)
             {
-                sb.AppendLine("You Won!");
+                sb.AppendLine(new StyledString("You Won!", center: 1).ToJson());
             }
 
             return sb.ToString();

@@ -1,4 +1,5 @@
-﻿using Mastermind.Exceptions;
+﻿using Mastermind.Display;
+using Mastermind.Exceptions;
 
 namespace Mastermind.State
 {
@@ -68,6 +69,11 @@ namespace Mastermind.State
         public CodeEntry Guess { get; }
         public int ColorMatch { get; }
         public int FullMatch { get; }
+
+        public string ToDisplay()
+        {
+            return $"{new StyledString($"{FullMatch}/{ColorMatch}", center: .25).ToJson()}{new StyledString(" ", center: .10).ToJson()}{Guess.ToDisplay()}";
+        }
 
         public override string ToString()
         {

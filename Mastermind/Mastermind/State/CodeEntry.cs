@@ -1,4 +1,6 @@
-﻿namespace Mastermind.State
+﻿using Mastermind.Display;
+
+namespace Mastermind.State
 {
     public class CodeEntry
     {
@@ -13,6 +15,11 @@
 
         public bool IsValid => ColorCode.Count == _maxLength && ColorCode.All(c => c.IsValid);
 
+        public string ToDisplay()
+        {
+            return string.Concat(ColorCode.Select(c => c.ToDisplay()));
+        }
+
         public override string ToString()
         {
             return string.Concat(ColorCode);
@@ -25,7 +32,29 @@
 
         public char Key { get; set; } = key;
 
+        private ConsoleColor Foreground = key switch
+        {
+            'r' => ConsoleColor.Red,
+            'b' => ConsoleColor.Blue,
+            'y' => ConsoleColor.Yellow,
+            'g' => ConsoleColor.Green
+        };
+
+        private ConsoleColor Background = key switch
+        {
+            'r' => ConsoleColor.Red,
+            'b' => ConsoleColor.Blue,
+            'y' => ConsoleColor.Yellow,
+            'g' => ConsoleColor.Green
+        };
+
         public bool IsValid => _validChars.Any(c => c.Equals(Key));
+
+        public string ToDisplay()
+        {
+            return new StyledString(Key.ToString(), Foreground, Background, .65/8).ToJson() +
+                   new StyledString(" ", center: .65 / 8).ToJson();
+        }
 
         public override string ToString()
         {

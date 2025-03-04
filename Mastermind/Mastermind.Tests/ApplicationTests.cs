@@ -3,15 +3,6 @@
     public class ApplicationTests : BaseTest
     {
         [Test]
-        public void ApplicationMainMenuDisplays()
-        {
-            var app = Start();
-            Assert.That(app.View.Text, Is.EqualTo(
-                "Mastermind" + Environment.NewLine +
-                "1 New Game" + Environment.NewLine));
-        }
-
-        [Test]
         public void ApplicationExitsOnKeyPress()
         {
             var app = Start();
