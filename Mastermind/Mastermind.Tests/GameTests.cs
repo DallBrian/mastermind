@@ -12,5 +12,13 @@ namespace Mastermind.Tests
             app.SimulateUserInput(ConsoleKey.D1);
             Assert.That(app.State.Phase, Is.EqualTo(AppPhase.InGame));
         }
+
+        [Test]
+        public void CanStopNewGame()
+        {
+            var app = Start(new ApplicationState() {Phase = AppPhase.InGame});
+            app.SimulateUserInput("quit");
+ 
+        }
     }
 }

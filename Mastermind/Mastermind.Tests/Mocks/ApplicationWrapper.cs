@@ -8,9 +8,9 @@ namespace Mastermind.Tests.Mocks
         public Application App { get; }
         public MockView View { get; }
 
-        public ApplicationWrapper()
+        public ApplicationWrapper(ApplicationState? appState=null)
         {
-            State = new ApplicationState();
+            State = appState ?? new ApplicationState();
             View = new MockView();
             App = new Application(View, State);
         }
