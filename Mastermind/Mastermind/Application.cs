@@ -70,7 +70,10 @@ namespace Mastermind
 
         private void HandleInGameResponse(string response)
         {
-            throw new NotImplementedException();
+            if (response == "quit")
+            {
+                _state.Phase = AppPhase.MainMenu;
+            }
         }
     }
 }

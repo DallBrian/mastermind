@@ -47,8 +47,6 @@ namespace Mastermind.Display
         {
             var sb = new StringBuilder();
             var attempts = new List<Attempt>();
-            attempts.AddRange(gameState.Attempts);
-            attempts.Reverse();
             foreach (var attempt in attempts)
             {
                 sb.AppendLine(attempt.ToString());
