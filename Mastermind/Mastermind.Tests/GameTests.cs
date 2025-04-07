@@ -24,6 +24,11 @@ namespace Mastermind.Tests
 
         public static TestCaseData[] CalculateAttemptTestCases = [
             new TestCaseData(new CodeEntry("rrrr"), new CodeEntry("rbrb"), 0, 2),
+            new TestCaseData(new CodeEntry("rbyg"), new CodeEntry("rbyg"), 0, 4),
+            new TestCaseData(new CodeEntry("rrbr"), new CodeEntry("rbyr"), 1, 2),
+            new TestCaseData(new CodeEntry("rrrr"), new CodeEntry("rbyg"), 0, 1),
+            new TestCaseData(new CodeEntry("rbyg"), new CodeEntry("rrrr"), 0, 1),
+            new TestCaseData(new CodeEntry("bbbb"), new CodeEntry("gygb"), 0, 1)
             ];
 
         [TestCaseSource(nameof(CalculateAttemptTestCases))]

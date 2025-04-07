@@ -14,12 +14,27 @@ namespace Mastermind.State
 
         private int GetFullMatches(CodeEntry guess, CodeEntry gameCode)
         {
-            throw new NotImplementedException();
+            return guess.ColorCode.Where((colorKey, i) => colorKey.Key.Equals(gameCode.ColorCode[i].Key)).Count();
         }
 
         private int GetColorMatches(CodeEntry guess, CodeEntry gameCode)
         {
-            throw new NotImplementedException();
+            var nonMatchingIndices = new List<int>();
+            for (var i = 0; i < guess.ColorCode.Count; i++)
+            {
+                var guessChar = guess.ColorCode[i].Key;
+                var codeChar = gameCode.ColorCode[i].Key;
+                if (!guessChar.Equals(codeChar)) nonMatchingIndices.Add(i);
+            }
+
+            var codeColors = gameCode.ColorCode
+                .Where((_, i) => nonMatchingIndices.Contains(i))
+                .Select(c => c.Key).ToList();
+            var guessColors = guess.ColorCode
+                .Where((_, i) => nonMatchingIndices.Contains(i))
+                .Select(c => c.Key).ToList();
+            var intersect = codeColors.Intersect(guessColors).ToList();
+            return intersect.Count;
         }
 
         public CodeEntry Guess { get; }
